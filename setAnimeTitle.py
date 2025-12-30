@@ -108,7 +108,7 @@ def main():
 
     video_files = get_video_files(current_dir)
     if not video_files:
-        print("No MP4 or MKV files found in this directory. Nothing to do.")
+        print("No MP4 or MKV files found in this directory この馬鹿. Nothing to do.")
         sys.exit(0)
 
     confirmation = input(f"\nProceed to update {len(video_files)} files? (Y/N): ").strip().upper()
