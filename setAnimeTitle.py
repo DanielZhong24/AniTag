@@ -30,10 +30,6 @@ def generate_mkv_tags_xml(title, album):
       <TargetTypeValue>50</TargetTypeValue>
     </Targets>
     <Simple>
-      <Name>TITLE</Name>
-      <String>{title}</String>
-    </Simple>
-    <Simple>
       <Name>ALBUM</Name>
       <String>{album}</String>
     </Simple>
@@ -58,31 +54,49 @@ def set_metadata(file_path, episode_idx, anime_title, exiftool_path, mkvpropedit
             f'-Title={episode_idx}',
             file_path,
         ]
+        if dry_run:
+            print(f"[DRY-RUN] Would run: {' '.join(command)}")
+        else:
+            try:
+                subprocess.run(command, check=True, text=True, encoding='utf-8', errors='replace')
+                print(f"Updated '{file_path}' -> Title: '{episode_idx}', Album: '{anime_title}'")
+            except subprocess.CalledProcessError as e:
+                print(f"Error updating '{file_path}': {e.stderr}")
+
     elif file_ext == ".mkv":
         if not mkvpropedit_path:
             print(f"Skipping MKV (mkvpropedit not found): {file_path}")
             return
+        # Force title
+        command_title = [
+            mkvpropedit_path,
+            file_path,
+            "--edit", "info",
+            "--set", f"title={episode_idx}"
+        ]
+        # Set album via XML
         xml_file = generate_mkv_tags_xml(episode_idx, anime_title)
-        command = [
+        command_album = [
             mkvpropedit_path,
             file_path,
             "--tags", f"all:{xml_file}"
         ]
+        if dry_run:
+            print(f"[DRY-RUN] Would run: {' '.join(command_title)}")
+            print(f"[DRY-RUN] Would run: {' '.join(command_album)}")
+        else:
+            try:
+                subprocess.run(command_title, check=True)
+                subprocess.run(command_album, check=True)
+                print(f"Updated '{file_path}' -> Title: '{episode_idx}', Album: '{anime_title}'")
+            except subprocess.CalledProcessError as e:
+                print(f"Error updating '{file_path}': {e.stderr}")
+            finally:
+                os.remove(xml_file)
+
     else:
         print(f"Skipping unsupported file type: {file_path}")
-        return
 
-    if dry_run:
-        print(f"[DRY-RUN] Would run: {' '.join(command)}")
-    else:
-        try:
-            subprocess.run(command, check=True, text=True, encoding='utf-8', errors='replace')
-            print(f"Updated '{file_path}' -> Title: '{episode_idx}', Album: '{anime_title}'")
-        except subprocess.CalledProcessError as e:
-            print(f"Error updating '{file_path}': {e.stderr}")
-        finally:
-            if file_ext == ".mkv" and not dry_run:
-                os.remove(xml_file)  # cleanup temp XML
 
 def main():
     if len(sys.argv) < 2:
