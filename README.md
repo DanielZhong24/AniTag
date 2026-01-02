@@ -29,3 +29,7 @@ Press `Y` to proceed, `N` or anything else to cancel
 1. Bundle as an executable installer with automatic PATH setup
 2. Potentially add torrent integration similar to DanDanPlayer
 3. Build a dedicated UI for curated content filtering (my preference, most likely yuri)
+4. More video format support? (most files are in mkv)
+5. Faster renaming with MP4 format
+6. Progress bar animation
+7. ASCII art in the terminal while loading changes
