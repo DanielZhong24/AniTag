@@ -42,3 +42,4 @@ Press `Y` to proceed, `N` or anything else to cancel
 5. Faster renaming with MP4 format
 6. Progress bar animation
 7. ASCII art in the terminal while loading changes
+8. rewrite in C to read any form of metadata (custom edits on mp4, mkv, avi, mov)
