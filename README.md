@@ -4,6 +4,15 @@ A command line tool that renames mkv/mp4 files with proper anime titles.
 
 Designed to work with MPV-Discord presence for accurate episode and anime metadata display.
 
+## Prerequisite
+Software:
+`Exiftool`
+`mkvpropedit`
+
+Environment:
+`Python 3`
+
+
 ## How to Use
 
 1. Download to any directory
