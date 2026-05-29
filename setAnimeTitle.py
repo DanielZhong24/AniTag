@@ -132,7 +132,7 @@ def main():
 
     print("\nUpdating metadata...")
     for idx, file in enumerate(video_files, start=1):
-        episode_idx = f"Ep{idx:02d}"
+        episode_idx = f"{anime_title} -Ep{idx:02d}"
         set_metadata(file, episode_idx, anime_title, exiftool_path, mkvpropedit_path, dry_run=dry_run)
 
     print("\nDone.")
